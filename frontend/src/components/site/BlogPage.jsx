@@ -39,6 +39,14 @@ function H3({ id, children }) {
   );
 }
 
+function H4({ children }) {
+  return (
+    <h4 className="text-white text-lg font-semibold tracking-tight mt-10 mb-3">
+      {children}
+    </h4>
+  );
+}
+
 function P({ children }) {
   return (
     <p className="text-white/70 text-base sm:text-[17px] leading-[1.82] mb-5">
@@ -60,6 +68,15 @@ function Pull({ children }) {
     <blockquote className="my-10 border-l-2 border-white/20 pl-6 py-2 text-white/85 text-xl sm:text-2xl tracking-tight italic leading-snug">
       {children}
     </blockquote>
+  );
+}
+
+function Note({ children }) {
+  return (
+    <div className="my-6 flex gap-3 bg-amber-400/5 border border-amber-400/20 rounded-lg p-4">
+      <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+      <p className="text-amber-200/80 text-sm leading-relaxed">{children}</p>
+    </div>
   );
 }
 
@@ -106,6 +123,29 @@ function TerminalBlock({ caption, lines }) {
   );
 }
 
+function YamlBlock({ caption, code }) {
+  return (
+    <figure className="my-10">
+      <div className="rounded-xl border border-white/10 bg-[#040404] overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/5 bg-[#0A0A0A]">
+          <div className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-[#FF5F57]/70" />
+            <span className="h-2 w-2 rounded-full bg-[#FEBC2E]/70" />
+            <span className="h-2 w-2 rounded-full bg-[#28C840]/70" />
+          </div>
+          <div className="font-mono text-[10px] text-white/40 tracking-widest uppercase">
+            {caption}
+          </div>
+          <div className="w-10" />
+        </div>
+        <pre className="p-5 font-mono text-[12.5px] leading-[1.75] text-white/75 overflow-x-auto whitespace-pre">
+          {code}
+        </pre>
+      </div>
+    </figure>
+  );
+}
+
 // ── Problem cards data ─────────────────────────────────────────────────
 
 const PROBLEMS = [
@@ -118,8 +158,8 @@ const PROBLEMS = [
   {
     icon: DollarSign,
     tag: "COST RUNAWAY",
-    title: "A $4,000 overnight loop is a deploy away.",
-    body: "Without active enforcement at the API boundary, a single bad prompt can burn your quota before an on-call engineer finishes their coffee.",
+    title: "A runaway loop is a deploy away.",
+    body: "Without active enforcement at the API boundary, a single bad prompt can burn your budget. Observability tools send alerts after the damage is done.",
   },
   {
     icon: ShieldAlert,
@@ -142,7 +182,7 @@ const FEATURES = [
     icon: Lock,
     tag: "agentnotary seal",
     title: "Cryptographic Notarization",
-    body: "Cargo.lock for AI agents. Hash manifest, prompts, tool source, MCP package versions, deps. Optional probe-response hash catches silent provider weight updates.",
+    body: "Hashes manifest, prompts, tool source, MCP package versions, and dependencies into agent.lock. Run --verify in CI to fail if anything drifted. --probe catches silent provider weight updates.",
     code: "agentnotary seal --verify",
     accent: "emerald",
   },
@@ -150,7 +190,7 @@ const FEATURES = [
     icon: FileCheck2,
     tag: "agentnotary compliance",
     title: "EU AI Act Compliance",
-    body: "Annex IV technical documentation generated deterministically from manifest + seal + sessions. Markdown for engineers, JSON for GRC.",
+    body: "Generates Annex IV technical documentation from manifest + seal + sessions. Rule engine classifier — every decision cites the rule that fired. Output is a scaffold; counsel review required.",
     code: "--standard eu-ai-act",
     accent: "emerald",
   },
@@ -158,23 +198,23 @@ const FEATURES = [
     icon: Swords,
     tag: "agentnotary attack",
     title: "Adversarial Fuzzing",
-    body: "Bundled OWASP LLM Top 10 corpus. Probes prompt injection, credential extraction, system-prompt leakage, excessive agency.",
-    code: "--suite owasp-llm-top10",
+    body: "Bundled OWASP LLM Top 10 corpus. Dry-run predicts blockability from manifest. Live mode sends real payloads. Reports vulnerability rate and per-attack evidence.",
+    code: "--suite owasp-llm-top10 --live",
     accent: "amber",
   },
   {
     icon: ShieldCheck,
     tag: "agentnotary guard run",
     title: "Runtime Guardrails",
-    body: "Local HTTP reverse proxy. Framework-agnostic. Blocks cost runaway, infinite loops, PII exfiltration, disallowed tools — with provider-shaped 403s.",
-    code: "-- python agent.py",
+    body: "Local HTTP reverse proxy. Framework-agnostic. Blocks on cost, iteration count, tool allowlist/denylist, PII patterns, content length, and rate limits. Returns provider-shaped 403s.",
+    code: "-- python my_agent.py",
     accent: "emerald",
   },
   {
     icon: ListTree,
     tag: "agentnotary bom",
     title: "AI Bill of Materials",
-    body: "CycloneDX 1.6 + SPDX 2.3 compliant SBOMs. Models, prompts, tools, MCP servers, deps — each cryptographically hashed.",
+    body: "CycloneDX 1.6 (OWASP) and SPDX 2.3 (Linux Foundation) compliant SBOMs. Models, prompts, tools, MCP servers, deps — each cryptographically hashed.",
     code: "--format cyclonedx",
     accent: "sky",
   },
@@ -182,8 +222,8 @@ const FEATURES = [
     icon: GitBranch,
     tag: "agentnotary replay",
     title: "Time-Travel Debugger",
-    body: "Fork any recorded session at any step, edit the prompt, simulate forward. Finally answer: 'why did the agent take that path?'",
-    code: "--rewind --step 7",
+    body: "Replay any recorded session, fork at any step, edit the prompt, simulate forward. Without an API key: deterministic stand-in. With a key: real LLM call for the diverged step only.",
+    code: "--rewind --step 7 --edit '...'",
     accent: "sky",
   },
 ];
@@ -206,8 +246,6 @@ const ACCENT = {
   },
 };
 
-// ── Chapter divider ────────────────────────────────────────────────────
-
 function ChapterDivider({ num, label }) {
   return (
     <div className="flex items-center gap-4 py-2">
@@ -222,6 +260,42 @@ function ChapterDivider({ num, label }) {
   );
 }
 
+const QUICKSTART_YAML = `apiVersion: agentnotary/v0.2
+agent:
+  name: refund-bot
+  version: 0.1.0
+  framework: anthropic
+  model:
+    provider: anthropic
+    name: claude-sonnet-4-5-20251022
+    temperature: 0.2
+    max_tokens: 2048
+
+  system_prompt_file: ./prompts/system.md
+
+  tools:
+    - { name: lookup_order,   type: function, module: app.tools:lookup_order }
+    - { name: process_refund, type: api,
+        endpoint: https://api.acme.com/refunds, auth: ACME_KEY }
+
+  guardrails:
+    cost:       { max_usd_per_session: 0.50, max_usd_per_call: 0.10, action: block }
+    iterations: { max_llm_calls: 25, action: block }
+    tools:      { allowlist: [lookup_order, process_refund] }
+    pii:        { patterns: [SSN, EMAIL, CREDIT_CARD], action: redact, direction: both }
+    rate:       { max_calls_per_minute: 60 }
+
+  compliance:
+    risk_class: limited
+    affected_users: external_consumers
+    intended_purpose: |
+      Resolves Tier-1 customer refund requests for orders under $50.
+    out_of_scope: [chargebacks, subscriptions]
+    data_handling:
+      processes_pii: true
+      pii_categories: [name, email, order_id]
+      retention_days: 90`;
+
 // ── Main component ─────────────────────────────────────────────────────
 
 export default function BlogPage() {
@@ -233,14 +307,14 @@ export default function BlogPage() {
           <div className="mb-10">
             <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-white/60 border border-white/10 rounded-full px-3 py-1">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Deep Dive · Long Form
+              Technical Overview · v0.3.0
             </div>
 
             <h2
               data-testid="blog-title"
               className="mt-6 font-semibold tracking-tighter text-white text-3xl sm:text-5xl lg:text-[3.4rem] leading-[1.03]"
             >
-              Why Agentic Trust is the Next Big Frontier in AI.
+              AgentNotary: What it does, how to use it, and why it exists.
             </h2>
 
             <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-white/50 font-mono">
@@ -253,13 +327,12 @@ export default function BlogPage() {
               <span>·</span>
               <span>May 4, 2026</span>
               <span>·</span>
-              <span>12 min read</span>
+              <span>10 min read</span>
               <span>·</span>
-              <span className="text-emerald-400/80">v0.3.0 release notes</span>
+              <span className="text-emerald-400/80">v0.3.0</span>
             </div>
           </div>
 
-          {/* Cover image */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -275,16 +348,15 @@ export default function BlogPage() {
             />
           </motion.div>
 
-          {/* Opening lead */}
           <article>
             <Lead>
-              Autonomous agents are the future. But their power comes with
-              unprecedented risk. How do you govern what an agent{" "}
-              <em>thinks</em>? How do you audit an AI that rewrites its own plan
-              mid-execution?{" "}
-              <strong className="text-white">AgentNotary</strong> is the trust
-              primitive that answers those questions — and it shipped
-              open-source in v0.3.0.
+              AgentNotary is an open-source CLI tool (Apache 2.0, Python 3.9+)
+              for notarizing, governing, and auditing AI agents. It gives you
+              eight commands that cover the full agent lifecycle — from
+              cryptographic sealing and runtime enforcement to EU AI Act
+              documentation and adversarial fuzzing. This post covers what each
+              command actually does, how to configure it, and where it fits
+              alongside your existing stack.
             </Lead>
           </article>
         </div>
@@ -302,25 +374,22 @@ export default function BlogPage() {
               className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-amber-400/80 border border-amber-400/20 bg-amber-400/5 rounded-full px-3 py-1"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-              The Wild West of Autonomous Agents
+              The gap in the current stack
             </div>
             <h3
               data-testid="problem-heading"
               className="mt-5 font-semibold tracking-tighter text-white text-2xl sm:text-4xl leading-[1.05]"
             >
-              Agents ship fast.
+              Observability tools watch.
               <br />
-              <span className="text-white/50">Accountability ships never.</span>
+              <span className="text-white/50">None of them enforce.</span>
             </h3>
             <p className="mt-4 text-white/60 text-sm sm:text-base leading-relaxed">
-              97% of companies deploy AI agents. 82% can't name which agents
-              they run. The governance primitives we expect from{" "}
-              <span className="text-white font-mono text-[0.95em]">cargo</span>
-              ,{" "}
-              <span className="text-white font-mono text-[0.95em]">
-                npm audit
-              </span>
-              , and SBOMs simply don't exist for agents — yet.
+              97% of companies have deployed AI agents. 82% can't track what
+              agents they're running. The existing observability platforms —
+              LangSmith, Langfuse, Helicone, AgentOps — are passive: they
+              record what happened. AgentNotary is active: it intercepts,
+              seals, blocks, and certifies.
             </p>
           </div>
 
@@ -362,98 +431,212 @@ export default function BlogPage() {
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       </section>
 
-      {/* ━━━ Article continuation: ground shifted ━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* ━━━ Article: install + what it does ━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <div className="mx-auto max-w-3xl px-6 py-12">
         <div className="mb-8">
-          <ChapterDivider num={1} label="Context" />
+          <ChapterDivider num={1} label="Install & Configure" />
         </div>
         <article>
-          <H3 id="ground-shifted">The ground shifted, but our tools didn't.</H3>
+          <H3 id="install">Installation</H3>
           <P>
-            97% of companies have deployed AI agents. 82% can't name which
-            agents are running in production. Read that again. The observability
-            stack we've built over the last two years —{" "}
-            <Mono>LangSmith</Mono>, <Mono>Langfuse</Mono>,{" "}
-            <Mono>Helicone</Mono>, <Mono>AgentOps</Mono> — does one thing
-            extraordinarily well: <em>it watches what already happened.</em>
+            AgentNotary is on PyPI. Python 3.9 or higher required. Install the
+            base package or pull in extras depending on what you need:
           </P>
+          <TerminalBlock
+            caption="pip install"
+            lines={[
+              { p: "$", t: "pip install agentnotary", tone: "cmd" },
+              { p: "$", t: 'pip install "agentnotary[anthropic]"   # live evals + attack runs', tone: "cmd" },
+              { p: "$", t: 'pip install "agentnotary[openai]"', tone: "cmd" },
+              { p: "$", t: 'pip install "agentnotary[pii]"          # Presidio NER for PII detection', tone: "cmd" },
+              { p: "$", t: 'pip install "agentnotary[all]"', tone: "cmd" },
+            ]}
+          />
+
+          <H3 id="config">The manifest: agentnotary.yaml</H3>
           <P>
-            That's fine for debugging. It's catastrophic for governance. None
-            of those tools <em>prevent</em> a runaway loop, <em>prove</em> an
-            agent hasn't drifted, <em>document</em> it for regulators, or{" "}
-            <em>probe</em> it for injections. AgentNotary occupies that empty
-            position — the notary public for AI agents.
+            Everything AgentNotary does starts from a manifest file. Run{" "}
+            <Mono>agentnotary init my-agent</Mono> to scaffold one, then edit
+            it. The manifest declares your agent's identity, model, tools,
+            guardrails, and compliance metadata. Here's a realistic example for
+            a refund bot:
           </P>
-          <Pull>
-            "Every existing tool is passive. AgentNotary intercepts. It doesn't
-            watch agents — it certifies them."
-          </Pull>
+          <YamlBlock caption="agentnotary.yaml" code={QUICKSTART_YAML} />
+          <P>
+            The <Mono>guardrails</Mono> block is what <Mono>guard run</Mono>{" "}
+            enforces at runtime. The <Mono>compliance</Mono> block is what{" "}
+            <Mono>compliance --standard eu-ai-act</Mono> uses to generate
+            documentation. Both are optional — you can start with just{" "}
+            <Mono>seal</Mono> and add the rest incrementally.
+          </P>
         </article>
       </div>
 
       {/* ━━━ CH 2: WALKTHROUGH ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <Walkthrough />
 
-      {/* ━━━ Article continuation: eight commands ━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* ━━━ Article: the eight commands ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <div className="mx-auto max-w-3xl px-6 pb-4 pt-4">
         <div className="mb-8">
-          <ChapterDivider num={2} label="The CLI" />
+          <ChapterDivider num={2} label="The Eight Commands" />
         </div>
         <article>
-          <H3 id="eight-commands">
-            The eight commands that make an agent notarizable.
-          </H3>
+          <H3 id="eight-commands">Eight commands, three layers.</H3>
           <P>
-            The repository ships eight composable commands organised into three
-            layers: <strong className="text-white">Notarize & Govern</strong>{" "}
-            (seal, guard, compliance),{" "}
-            <strong className="text-white">Audit & Test</strong> (bom, bench,
-            attack, replay), and the{" "}
-            <strong className="text-white">Develop / Versioning</strong>{" "}
-            utilities (init, validate, tag, rollback, sessions, scan). Each
-            produces a deterministic, cryptographically verifiable artifact you
-            can diff in CI.
+            The commands are organized into three groups. You don't have to use
+            all of them — each one is independent and composable with your
+            existing CI or LLM framework.
+          </P>
+
+          <div className="my-8 space-y-1 font-mono text-sm">
+            {[
+              ["Notarize & Govern", "seal · guard · compliance"],
+              ["Audit & Test", "bom · bench · attack · replay"],
+              ["Project lifecycle", "init · validate · test · tag · rollback · sessions · scan"],
+            ].map(([layer, cmds]) => (
+              <div key={layer} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-2.5 border-b border-white/5">
+                <span className="text-white/40 text-xs uppercase tracking-widest w-40 shrink-0">{layer}</span>
+                <span className="text-emerald-300/80 text-xs">{cmds}</span>
+              </div>
+            ))}
+          </div>
+
+          <H4>seal — Cargo.lock for your agent</H4>
+          <P>
+            <Mono>agentnotary seal</Mono> hashes everything that defines your
+            agent: the manifest, raw and normalized prompts, tool source code,
+            MCP package versions, and dependencies. The result is{" "}
+            <Mono>agent.lock</Mono>. Run <Mono>seal --verify</Mono> in CI and
+            the pipeline fails the moment anything changes. The optional{" "}
+            <Mono>--probe</Mono> flag sends a canonical prompt and hashes the
+            response, catching silent provider weight updates behind the same
+            model ID.
           </P>
           <TerminalBlock
-            caption="The core governance loop, end-to-end"
+            caption="seal — write, verify, probe"
             lines={[
-              { p: "$", t: "agentnotary init refund-bot", tone: "cmd" },
-              { p: "$", t: "agentnotary seal --probe", tone: "cmd" },
-              {
-                p: "",
-                t: "✓ agent.lock sealed · 0 drift · probe hash pinned",
-                tone: "ok",
-              },
-              {
-                p: "$",
-                t: "agentnotary attack --suite owasp-llm-top10",
-                tone: "cmd",
-              },
-              {
-                p: "",
-                t: "vuln rate 8.5% · report → attack_report.json",
-                tone: "ok",
-              },
-              {
-                p: "$",
-                t: "agentnotary guard run -- python refund_bot.py",
-                tone: "cmd",
-              },
-              {
-                p: "",
-                t: "BLOCK cost exceeded @ call 14 · 403 billing_hard_limit_reached",
-                tone: "err",
-              },
-              {
-                p: "$",
-                t: "agentnotary compliance --standard eu-ai-act",
-                tone: "cmd",
-              },
-              {
-                p: "",
-                t: "✓ Annex IV scaffold · 28 sections · counsel review required",
-                tone: "warn",
-              },
+              { p: "$", t: "agentnotary seal             # write agent.lock", tone: "cmd" },
+              { p: "$", t: "agentnotary seal --verify    # fail CI if drift detected", tone: "cmd" },
+              { p: "$", t: "agentnotary seal --probe     # also hash a probe response", tone: "cmd" },
+              { p: "", t: "✓ agent.lock sealed · manifest · prompts · tools · deps", tone: "ok" },
+            ]}
+          />
+
+          <H4>guard run — block at the API boundary</H4>
+          <P>
+            <Mono>agentnotary guard run -- &lt;your agent command&gt;</Mono>{" "}
+            starts a local HTTP reverse proxy in front of your LLM provider.
+            Framework-agnostic — anything that speaks HTTP is covered. Guardrails
+            are declared in <Mono>agentnotary.yaml</Mono> under{" "}
+            <Mono>guardrails:</Mono> and cover six dimensions: cost, iteration
+            counts, tool allowlist/denylist/approval, PII patterns, content
+            limits, and rate. When a policy fires, it returns a
+            provider-shaped 403 so your SDK raises its native exception — your
+            agent code doesn't change.
+          </P>
+          <TerminalBlock
+            caption="guard run — enforce at runtime"
+            lines={[
+              { p: "$", t: "agentnotary guard run -- python -m refund_bot", tone: "cmd" },
+              { p: "", t: "proxy listening  127.0.0.1:8787", tone: "out" },
+              { p: "", t: "enforcing  cost=$0.50/session · 25 llm calls · 60 rpm", tone: "out" },
+              { p: "", t: "enforcing  tools=[lookup_order, process_refund]", tone: "out" },
+              { p: "", t: "enforcing  pii=redact [SSN EMAIL CREDIT_CARD] both directions", tone: "out" },
+              { p: "", t: "BLOCK  cost guardrail hit → 403 billing_hard_limit_reached", tone: "err" },
+            ]}
+          />
+
+          <H4>compliance — EU AI Act Annex IV scaffold</H4>
+          <P>
+            Generates Annex IV technical documentation deterministically from
+            the manifest, seal, and recorded sessions. Output is Markdown for
+            engineers and JSON for GRC tools. The risk classifier is a rule
+            engine — not an LLM call — so every classification cites the exact
+            rule that fired (e.g.{" "}
+            <Mono>EU-AI-ACT-ANNEX-III-payment</Mono> triggered by keyword{" "}
+            <Mono>payment</Mono> in <Mono>tools/description</Mono>).
+          </P>
+          <Note>
+            Generated documentation is a scaffold only — not legal advice.
+            Review by qualified counsel and a notified body is required before
+            regulatory submission.
+          </Note>
+
+          <H4>attack — OWASP LLM Top 10 fuzzer</H4>
+          <P>
+            Ships a bundled attack corpus covering the OWASP LLM Top 10:
+            prompt injection, insecure output handling, sensitive information
+            disclosure, excessive agency, and more. Two modes:{" "}
+            <Mono>--dry-run</Mono> (predicts blockability from the manifest
+            without sending real prompts) and <Mono>--live</Mono> (sends real
+            payloads, requires an API key). Output is a vulnerability rate and
+            per-attack evidence.
+          </P>
+          <TerminalBlock
+            caption="attack — adversarial fuzzing"
+            lines={[
+              { p: "$", t: "agentnotary attack --suite owasp-llm-top10           # dry-run", tone: "cmd" },
+              { p: "$", t: "agentnotary attack --suite owasp-llm-top10 --live    # real payloads", tone: "cmd" },
+              { p: "", t: "running  LLM01 prompt-injection ...", tone: "out" },
+              { p: "", t: "running  LLM06 sensitive-info ...", tone: "out" },
+              { p: "", t: "running  LLM08 excessive-agency ...", tone: "out" },
+              { p: "", t: "vuln rate → attack_report.json", tone: "ok" },
+            ]}
+          />
+
+          <H4>bom — AI Software Bill of Materials</H4>
+          <P>
+            Produces CycloneDX 1.6 (OWASP) or SPDX 2.3 (Linux Foundation)
+            compliant SBOMs. Enumerates models, prompts, tools, MCP servers,
+            and dependencies — each with a cryptographic hash. Intended for
+            procurement and supply-chain audits.
+          </P>
+          <TerminalBlock
+            caption="bom — AI-BOM generation"
+            lines={[
+              { p: "$", t: "agentnotary bom --format cyclonedx   # → agent.sbom.cdx.json", tone: "cmd" },
+              { p: "$", t: "agentnotary bom --format spdx         # → agent.sbom.spdx.json", tone: "cmd" },
+              { p: "", t: "enumerate  models(1) prompts(4) tools(3) deps", tone: "out" },
+              { p: "", t: "✓ SBOM written", tone: "ok" },
+            ]}
+          />
+
+          <H4>bench — cross-model cost vs accuracy</H4>
+          <P>
+            Runs your eval suite against multiple models in parallel and
+            outputs an ASCII Pareto chart of cost versus accuracy. Without API
+            keys it runs in dry-run mode, projecting cost from prompt size and
+            a static pricing table. With keys it does live measurement.
+          </P>
+          <TerminalBlock
+            caption="bench — Pareto comparison"
+            lines={[
+              { p: "$", t: "agentnotary bench --models claude-sonnet-4-5-20251022,gpt-4o,gemini-2.5-flash", tone: "cmd" },
+              { p: "", t: "  acc%", tone: "out" },
+              { p: "", t: "100 ┤         ◆ claude-sonnet-4-5", tone: "out" },
+              { p: "", t: " 90 ┤    ◆ gpt-4o", tone: "out" },
+              { p: "", t: " 80 ┤ ◆ gemini-2.5-flash", tone: "out" },
+              { p: "", t: "    └──────────────────── $/1K tokens", tone: "out" },
+            ]}
+          />
+
+          <H4>replay — time-travel debugger</H4>
+          <P>
+            Replay any recorded session, fork at any step, edit the prompt, and
+            simulate forward. Steps before the fork replay deterministically.
+            The diverged step uses a real LLM call only if an API key is
+            present — otherwise it substitutes a deterministic stand-in so you
+            can still inspect the branching structure.
+          </P>
+          <TerminalBlock
+            caption="replay — fork and diverge"
+            lines={[
+              { p: "$", t: "agentnotary replay abc123", tone: "cmd" },
+              { p: "$", t: "agentnotary replay abc123 --rewind --step 7 --edit 'What if...'", tone: "cmd" },
+              { p: "", t: "fork   session abc123 @ step 7", tone: "out" },
+              { p: "", t: "replay steps 1..6 (deterministic)", tone: "out" },
+              { p: "", t: "diverge step 7 → live call (requires API key)", tone: "out" },
+              { p: "", t: "trace  saved → sessions/abc123-fork.json", tone: "ok" },
             ]}
           />
         </article>
@@ -462,24 +645,32 @@ export default function BlogPage() {
       {/* ━━━ CH 3: INTERACTIVE COMMANDS REFERENCE ━━━━━━━━━━━━━━━━━━━━━━ */}
       <Commands />
 
-      {/* ━━━ Article: seal, guard, compliance, attack ━━━━━━━━━━━━━━━━━━ */}
+      {/* ━━━ Article: full governance loop ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <div className="mx-auto max-w-3xl px-6 py-12">
         <div className="mb-8">
-          <ChapterDivider num={3} label="Deep Dive" />
+          <ChapterDivider num={3} label="Full Governance Loop" />
         </div>
         <article>
-          <H3 id="seal">
-            Why <Mono>seal</Mono> matters more than you think.
-          </H3>
+          <H3 id="governance-loop">Running the full loop</H3>
           <P>
-            A prompt is code. Tool source is code. System prompts, MCP package
-            versions, model weights that providers silently update behind the
-            same model ID — all of it is code. But unlike your application
-            binary, none of it has a lockfile.{" "}
-            <Mono>agentnotary seal</Mono> is the Cargo.lock for AI agents.
+            Once your <Mono>agentnotary.yaml</Mono> is set up, the governance
+            loop is six commands. You can run all of them locally before your
+            first deploy, and then add <Mono>seal --verify</Mono> to CI.
           </P>
+          <TerminalBlock
+            caption="Full governance loop from the README"
+            lines={[
+              { p: "$", t: "agentnotary seal                                # notarize", tone: "cmd" },
+              { p: "$", t: "agentnotary attack                               # adversarial check", tone: "cmd" },
+              { p: "$", t: "agentnotary guard run -- python -m refund_bot    # enforce at runtime", tone: "cmd" },
+              { p: "$", t: "agentnotary compliance --standard eu-ai-act      # certify", tone: "cmd" },
+              { p: "$", t: "agentnotary bom --format cyclonedx               # AI-BOM for procurement", tone: "cmd" },
+              { p: "$", t: "git add agentnotary.yaml agent.lock docs/ && git commit", tone: "cmd" },
+              { p: "", t: "✓ agent notarized, tested, guarded, documented, and committed", tone: "ok" },
+            ]}
+          />
 
-          {/* Terminal screenshot */}
+          {/* Terminal screenshot from the repo */}
           <figure className="my-10">
             <div className="rounded-xl border border-white/10 bg-[#0A0A0A] overflow-hidden">
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/5 bg-[#070707]">
@@ -489,7 +680,7 @@ export default function BlogPage() {
                   <span className="h-2 w-2 rounded-full bg-[#28C840]/70" />
                 </div>
                 <div className="font-mono text-[10px] text-white/40 tracking-widest uppercase">
-                  terminal · agentnotary seal · attack · guard
+                  agentnotary in action
                 </div>
                 <div className="w-10" />
               </div>
@@ -501,149 +692,71 @@ export default function BlogPage() {
               />
             </div>
             <figcaption className="mt-3 text-center text-xs font-mono text-white/40 tracking-wider uppercase">
-              Real CLI output — deterministic, diffable, CI-ready
+              Real CLI output from the repo
             </figcaption>
           </figure>
-
-          <P>
-            Hashed in v0.3.0: the manifest, raw and normalized prompts, tool
-            source code, MCP package versions, dependencies, and optionally a
-            probe-response hash for provider-drift detection. Run{" "}
-            <Mono>seal --verify</Mono> in CI and the pipeline fails the moment
-            anything moves. The format is a public spec — the stated goal is to
-            get <Mono>agent.lock</Mono> onto every agent in production.
-          </P>
-
-          <H3 id="guard">
-            Why <Mono>guard</Mono> is the only primitive that actually protects
-            you.
-          </H3>
-          <P>
-            <Mono>guard</Mono> is a local HTTP reverse proxy.
-            Framework-agnostic. It blocks calls at the API boundary based on
-            typed guardrails — <Mono>cost</Mono>, <Mono>iterations</Mono>,{" "}
-            <Mono>tools</Mono>, <Mono>pii</Mono>, <Mono>content</Mono>,{" "}
-            <Mono>rate</Mono>. When a policy fires it returns a{" "}
-            <em>provider-shaped 403</em> so your SDK raises its native exception
-            class. Your code didn't change. The runaway stops.
-          </P>
-          <P>
-            Every other tool on the market is passive. They send you a Slack
-            alert at 3 AM after the bill hits $4,000. <Mono>guard</Mono> would
-            have stopped it at $0.50 — before call #15 left the box.
-          </P>
-
-          <H3 id="compliance">
-            Why the EU AI Act changes everything on August 2, 2026.
-          </H3>
-          <P>
-            Enforcement begins in nine months. Annex IV requires technical
-            documentation of intended purpose, risk class, data handling,
-            performance metrics, and the human-oversight regime. You cannot
-            generate that from a LangSmith trace.{" "}
-            <Mono>agentnotary compliance --standard eu-ai-act</Mono> emits a
-            deterministic scaffold in both Markdown (for engineers) and JSON
-            (for GRC tools).
-          </P>
-          <P>
-            The risk classifier is deliberately <em>not an LLM call</em> —
-            it's a rule engine. Every classification cites the rule that fired:{" "}
-            <Mono>EU-AI-ACT-ANNEX-III-payment</Mono> triggered by the keyword{" "}
-            <Mono>payment</Mono> in <Mono>tools/description</Mono>. Important
-            caveat: generated documentation is a <em>scaffold</em>, not legal
-            advice. Counsel review is required before submission.
-          </P>
-
-          <H3 id="attack">Adversarial fuzzing isn't theatre.</H3>
-          <P>
-            <Mono>agentnotary attack --suite owasp-llm-top10</Mono> ships a
-            real attack corpus covering prompt injection, insecure output
-            handling, sensitive information disclosure, excessive agency, and
-            more. Two modes: <Mono>--dry-run</Mono> (predicts blockability from
-            manifest) and <Mono>--live</Mono> (actually sends the payloads and
-            measures). You get a vulnerability rate and per-attack evidence.
-            It's the closest thing to Burp Suite that the agentic stack has
-            had.
-          </P>
-
-          <Pull>
-            "Think of it this way: <Mono>seal</Mono> is Cargo.lock,{" "}
-            <Mono>guard</Mono> is an IPTables rule, <Mono>attack</Mono> is
-            Burp Suite, and <Mono>compliance</Mono> is Terraform plan — all for
-            agents, all in one CLI, all open source."
-          </Pull>
-
-          <H3>
-            The AI-BOM, the Pareto bench, and the time-travel debugger.
-          </H3>
-          <P>
-            Three more commands ship in v0.3.0 that solve problems nobody else
-            is even aiming at:
-          </P>
-          <ul className="list-none pl-0 space-y-3 my-6">
-            {[
-              [
-                "bom",
-                "CycloneDX 1.6 + SPDX 2.3 compliant SBOMs. Models, prompts, tools, MCP servers, and deps — each cryptographically hashed. Procurement-ready.",
-              ],
-              [
-                "bench",
-                "Parallel cross-model eval with an ASCII Pareto chart of cost vs accuracy. Without keys: projects cost from prompt size + static pricing. With keys: live measurement.",
-              ],
-              [
-                "replay --rewind",
-                "Fork any recorded session at any step, edit the prompt, simulate forward. Without a key: deterministic stand-in. With a key: real LLM call for the diverged step only.",
-              ],
-            ].map(([k, v]) => (
-              <li
-                key={k}
-                className="flex items-start gap-4 p-4 rounded-md border border-white/5 bg-[#0A0A0A]"
-              >
-                <span className="font-mono text-xs text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2 py-0.5 rounded shrink-0">
-                  {k}
-                </span>
-                <span className="text-white/70 text-sm leading-relaxed">
-                  {v}
-                </span>
-              </li>
-            ))}
-          </ul>
         </article>
       </div>
 
       {/* ━━━ CH 4: COMPARISON ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <Comparison />
 
-      {/* ━━━ Article: rebrand + roadmap ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* ━━━ Article: position + migration + roadmap ━━━━━━━━━━━━━━━━━━━ */}
       <div className="mx-auto max-w-3xl px-6 pb-4 pt-4">
         <div className="mb-8">
-          <ChapterDivider num={4} label="Roadmap" />
+          <ChapterDivider num={4} label="Context" />
         </div>
         <article>
-          <H3>
-            From <Mono>agentbox</Mono> to AgentNotary: a positioning move.
-          </H3>
+          <H3>How it fits alongside your stack</H3>
           <P>
-            v0.3.0 also ships a rebrand. The prior name (<Mono>agentbox</Mono>)
-            had become synonymous with sandbox/container projects — a different
-            concept. AgentNotary positions the tool where it actually belongs:{" "}
-            <em>the notary public for AI agents.</em> It certifies, seals,
-            witnesses, archives, and produces evidence. Backwards compatibility
-            is preserved end-to-end; old manifests parse with a one-line stderr
-            warning.
+            AgentNotary doesn't replace LangSmith, Langfuse, or any other
+            observability tool. Those tools are good at tracing and evals.
+            AgentNotary adds the things they don't have: a cryptographic lock
+            file (<Mono>agent.lock</Mono>), a runtime proxy that actually
+            blocks (not just alerts), compliance documentation generation, an
+            adversarial test suite, and an AI-BOM. You can run both side by
+            side.
           </P>
+          <Pull>
+            "They watch agents. AgentNotary certifies them."
+          </Pull>
 
-          <H3>The roadmap is the point.</H3>
+          <H3>Migrating from agentbox</H3>
           <P>
-            v0.3.x adds streaming-proxy support and NIST AI RMF / ISO 42001
-            templates. v0.4 brings Sigstore-style cryptographic signing and a
-            transparency log for <Mono>agent.lock</Mono>. v0.5 — AgentNotary
-            Hub, a public registry of sealed agents with{" "}
-            <Mono>notarize push</Mono> and <Mono>notarize pull</Mono>. The
-            ambition is a public, federated trust infrastructure for the
-            autonomous stack. Every agent notarized. Every drift detected.
-            Every regulator satisfied.
+            AgentNotary was previously released as <Mono>agentbox</Mono>.
+            v0.3.0 is the successor under the new name. Migration is
+            straightforward:
           </P>
+          <TerminalBlock
+            caption="migrating from agentbox"
+            lines={[
+              { p: "$", t: "pip uninstall agentbox && pip install agentnotary", tone: "cmd" },
+              { p: "", t: "# rename agentbox.yaml → agentnotary.yaml  (or leave it; both are read)", tone: "out" },
+              { p: "", t: "# update apiVersion: agentbox/v0.2 → agentnotary/v0.2  (legacy accepted)", tone: "out" },
+              { p: "", t: "# .agentbox/ state dirs continue to work alongside .agentnotary/", tone: "out" },
+              { p: "", t: "✓ no manifest changes required", tone: "ok" },
+            ]}
+          />
+
+          <H3>Roadmap</H3>
+          <ul className="list-none pl-0 space-y-3 my-6">
+            {[
+              ["v0.3.0 (current)", "bom, bench, attack, replay --rewind"],
+              ["v0.3.x", "Streaming proxy support in guard. NIST AI RMF and ISO 42001 compliance templates."],
+              ["v0.4", "Sigstore-style cryptographic signing + transparency log for agent.lock. Behavioral fingerprinting (N-prompt probe panel instead of single-prompt)."],
+              ["v0.5", "AgentNotary Hub — public registry of sealed agents. notarize push / notarize pull."],
+            ].map(([k, v]) => (
+              <li
+                key={k}
+                className="flex items-start gap-4 p-4 rounded-md border border-white/5 bg-[#0A0A0A]"
+              >
+                <span className="font-mono text-xs text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2 py-0.5 rounded shrink-0 whitespace-nowrap">
+                  {k}
+                </span>
+                <span className="text-white/70 text-sm leading-relaxed">{v}</span>
+              </li>
+            ))}
+          </ul>
         </article>
       </div>
 
@@ -657,17 +770,17 @@ export default function BlogPage() {
                 className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-white/60 border border-white/10 rounded-full px-3 py-1"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                The Governance Loop
+                All eight capabilities
               </div>
               <h3
                 data-testid="features-heading"
                 className="mt-5 font-semibold tracking-tighter text-white text-2xl sm:text-4xl leading-[1.05]"
               >
-                Declare → Seal → Enforce → Certify.
+                Seal → Guard → Test → Certify.
               </h3>
               <p className="mt-4 text-white/60 text-sm sm:text-base max-w-xl leading-relaxed">
-                Eight composable CLI commands. Drop them into CI. Run them
-                alongside LangSmith. They don't compete — they certify.
+                Each command is independent. Use one or all eight. They compose
+                cleanly into CI and work with any LLM framework.
               </p>
             </div>
             <a
@@ -675,7 +788,7 @@ export default function BlogPage() {
               data-testid="features-browse-commands"
               className="font-mono text-xs uppercase tracking-widest text-white/60 hover:text-white border-b border-white/10 hover:border-white/40 pb-1 transition-colors self-start"
             >
-              Browse all 8 commands →
+              Try the interactive terminal →
             </a>
           </div>
 
@@ -724,48 +837,35 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* ━━━ Article conclusion: get started ━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* ━━━ Article conclusion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <div className="mx-auto max-w-3xl px-6 py-12">
         <div className="mb-8">
           <ChapterDivider num={5} label="Get Started" />
         </div>
         <article>
-          <H3 id="get-started">How to start, today.</H3>
+          <H3 id="get-started">Start in under a minute.</H3>
           <TerminalBlock
-            caption="Install and ship the governance loop"
+            caption="quickstart from the README"
             lines={[
               { p: "$", t: "pip install agentnotary", tone: "cmd" },
-              {
-                p: "$",
-                t: "agentnotary init my-agent && cd my-agent",
-                tone: "cmd",
-              },
+              { p: "$", t: "mkdir my-agent && cd my-agent", tone: "cmd" },
+              { p: "$", t: "agentnotary init refund-bot    # scaffolds agentnotary.yaml + prompts/", tone: "cmd" },
+              { p: "", t: "# edit agentnotary.yaml ...", tone: "out" },
               { p: "$", t: "agentnotary seal", tone: "cmd" },
               { p: "$", t: "agentnotary attack", tone: "cmd" },
-              {
-                p: "$",
-                t: "agentnotary compliance --standard eu-ai-act",
-                tone: "cmd",
-              },
-              {
-                p: "$",
-                t: "agentnotary bom --format cyclonedx",
-                tone: "cmd",
-              },
-              {
-                p: "",
-                t: "→ commit agentnotary.yaml + agent.lock + docs/  ✓",
-                tone: "ok",
-              },
+              { p: "$", t: "agentnotary guard run -- python -m refund_bot", tone: "cmd" },
+              { p: "$", t: "agentnotary compliance --standard eu-ai-act", tone: "cmd" },
+              { p: "$", t: "agentnotary bom --format cyclonedx", tone: "cmd" },
+              { p: "$", t: "git add agentnotary.yaml agent.lock docs/ && git commit", tone: "cmd" },
             ]}
           />
           <P>
-            Apache 2.0. Use it commercially, fork it, embed it. Just keep the
-            notice. The <Mono>agent.lock</Mono> format is a public spec. The
-            author wants it on every agent in production — and so should you.
+            Apache 2.0. Use it commercially, fork it, embed it. The{" "}
+            <Mono>agent.lock</Mono> format is a public spec. Tests:{" "}
+            <Mono>pytest tests/ -q</Mono> — 169 tests, ~8 seconds.
           </P>
 
-          {/* Walkthrough video inline */}
+          {/* Walkthrough video */}
           <figure className="my-12">
             <div className="rounded-xl border border-white/10 bg-[#050505] overflow-hidden shadow-[0_30px_80px_-30px_rgba(16,185,129,0.2)]">
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/5 bg-[#0A0A0A]">
@@ -775,7 +875,7 @@ export default function BlogPage() {
                   <span className="h-2 w-2 rounded-full bg-[#28C840]/70" />
                 </div>
                 <div className="font-mono text-[10px] text-white/40 tracking-widest uppercase">
-                  walkthrough.mp4 · AI-narrated · 0:29
+                  walkthrough · AI-narrated
                 </div>
                 <div className="w-10" />
               </div>
@@ -788,10 +888,6 @@ export default function BlogPage() {
                 className="w-full aspect-video bg-black"
               />
             </div>
-            <figcaption className="mt-3 text-center text-xs font-mono text-white/40 tracking-wider uppercase">
-              Video: the governance loop in 29 seconds · voice-over generated
-              with OpenAI TTS
-            </figcaption>
           </figure>
 
           {/* CTAs */}
@@ -804,7 +900,7 @@ export default function BlogPage() {
               className="inline-flex items-center gap-2 bg-white text-black hover:bg-white/90 rounded-md px-5 py-3 font-medium tracking-tight transition-all active:scale-[0.98]"
             >
               <Github className="h-4 w-4" />
-              Read the repository
+              View on GitHub
               <ArrowUpRight className="h-4 w-4" />
             </a>
             <a
@@ -830,11 +926,12 @@ export default function BlogPage() {
                   CharanBharathula
                 </div>
                 <div className="font-mono text-[11px] text-white/40 mt-0.5">
-                  Author · AgentNotary · v0.3.0
+                  Author · AgentNotary
                 </div>
                 <p className="mt-3 text-white/55 text-sm leading-relaxed max-w-sm">
-                  Building trust infrastructure for the autonomous stack.
-                  AgentNotary is Apache 2.0 — contributions welcome.
+                  AgentNotary is Apache 2.0. Contributions welcome —
+                  especially Sigstore integration, streaming proxy, and wider
+                  attack corpus.
                 </p>
                 <a
                   href="https://github.com/CharanBharathula/agentnotary"
