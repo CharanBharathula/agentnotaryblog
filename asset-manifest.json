@@ -1,0 +1,35 @@
+{
+  "files": {
+    "main.css": "/agentnotaryblog/static/css/main.85aa849b.css",
+    "main.js": "/agentnotaryblog/static/js/main.9188f1ec.js",
+    "static/js/57.2c9fb657.chunk.js": "/agentnotaryblog/static/js/57.2c9fb657.chunk.js",
+    "static/media/geist-sans-latin-700-normal.woff": "/agentnotaryblog/static/media/geist-sans-latin-700-normal.6adf11b5178ae699f994.woff",
+    "static/media/geist-sans-latin-600-normal.woff": "/agentnotaryblog/static/media/geist-sans-latin-600-normal.c69cc7699f80165da433.woff",
+    "static/media/geist-sans-latin-500-normal.woff": "/agentnotaryblog/static/media/geist-sans-latin-500-normal.9b60f3f595d88aa06b8c.woff",
+    "static/media/geist-sans-latin-400-normal.woff": "/agentnotaryblog/static/media/geist-sans-latin-400-normal.fdd1e0fe220cea9f1fad.woff",
+    "static/media/geist-sans-latin-700-normal.woff2": "/agentnotaryblog/static/media/geist-sans-latin-700-normal.ab6680f2fdae8228b965.woff2",
+    "static/media/geist-sans-latin-600-normal.woff2": "/agentnotaryblog/static/media/geist-sans-latin-600-normal.7d5f00b5760ed1c7ae28.woff2",
+    "static/media/geist-sans-latin-500-normal.woff2": "/agentnotaryblog/static/media/geist-sans-latin-500-normal.2e03668b3b5a378f2799.woff2",
+    "static/media/geist-sans-latin-400-normal.woff2": "/agentnotaryblog/static/media/geist-sans-latin-400-normal.32c502ac52226b7f181e.woff2",
+    "static/media/geist-mono-latin-500-normal.woff": "/agentnotaryblog/static/media/geist-mono-latin-500-normal.3d624d8e1415f681345c.woff",
+    "static/media/geist-mono-latin-400-normal.woff": "/agentnotaryblog/static/media/geist-mono-latin-400-normal.4c1a1d696150a7a7526f.woff",
+    "static/media/geist-mono-latin-500-normal.woff2": "/agentnotaryblog/static/media/geist-mono-latin-500-normal.99e36af234c5f2c6038a.woff2",
+    "static/media/geist-mono-latin-400-normal.woff2": "/agentnotaryblog/static/media/geist-mono-latin-400-normal.dfa401cb933892d33f85.woff2",
+    "static/media/geist-mono-latin-ext-500-normal.woff": "/agentnotaryblog/static/media/geist-mono-latin-ext-500-normal.878df532fc2a81c15dae.woff",
+    "static/media/geist-mono-latin-ext-400-normal.woff": "/agentnotaryblog/static/media/geist-mono-latin-ext-400-normal.ffcaf1dd006cd87f61d5.woff",
+    "static/media/geist-mono-cyrillic-500-normal.woff": "/agentnotaryblog/static/media/geist-mono-cyrillic-500-normal.59ab6f114a320faa84c0.woff",
+    "static/media/geist-mono-cyrillic-400-normal.woff": "/agentnotaryblog/static/media/geist-mono-cyrillic-400-normal.f14508f30aea40c93cbd.woff",
+    "static/media/geist-mono-latin-ext-500-normal.woff2": "/agentnotaryblog/static/media/geist-mono-latin-ext-500-normal.a9a397a3fe98a31b9517.woff2",
+    "static/media/geist-mono-latin-ext-400-normal.woff2": "/agentnotaryblog/static/media/geist-mono-latin-ext-400-normal.6c8fdd731b1bb16e8c3c.woff2",
+    "static/media/geist-mono-cyrillic-500-normal.woff2": "/agentnotaryblog/static/media/geist-mono-cyrillic-500-normal.2616f2e49b8a9252b7d5.woff2",
+    "static/media/geist-mono-cyrillic-400-normal.woff2": "/agentnotaryblog/static/media/geist-mono-cyrillic-400-normal.38f4f2e85959ca6269a6.woff2",
+    "index.html": "/agentnotaryblog/index.html",
+    "main.85aa849b.css.map": "/agentnotaryblog/static/css/main.85aa849b.css.map",
+    "main.9188f1ec.js.map": "/agentnotaryblog/static/js/main.9188f1ec.js.map",
+    "57.2c9fb657.chunk.js.map": "/agentnotaryblog/static/js/57.2c9fb657.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.85aa849b.css",
+    "static/js/main.9188f1ec.js"
+  ]
+}
