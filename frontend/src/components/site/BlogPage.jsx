@@ -268,6 +268,7 @@ agent:
   model:
     provider: anthropic
     name: claude-sonnet-4-5-20251022
+    pinned_version: claude-sonnet-4-5-20251022
     temperature: 0.2
     max_tokens: 2048
 
@@ -284,6 +285,10 @@ agent:
     tools:      { allowlist: [lookup_order, process_refund] }
     pii:        { patterns: [SSN, EMAIL, CREDIT_CARD], action: redact, direction: both }
     rate:       { max_calls_per_minute: 60 }
+
+  entry_point:
+    command: "python -m refund_bot"
+    env_vars: [ANTHROPIC_API_KEY, ACME_KEY]
 
   compliance:
     risk_class: limited
@@ -350,12 +355,12 @@ export default function BlogPage() {
 
           <article>
             <Lead>
-              AgentNotary is an open-source CLI tool (Apache 2.0, Python 3.9+)
-              for notarizing, governing, and auditing AI agents. It gives you
-              eight commands that cover the full agent lifecycle — from
-              cryptographic sealing and runtime enforcement to EU AI Act
-              documentation and adversarial fuzzing. This post covers what each
-              command actually does, how to configure it, and where it fits
+              AgentNotary is an open-source CLI (Apache 2.0, Python 3.9+) —
+              the notary public for AI agents. It certifies, seals, witnesses,
+              archives, and produces evidence. Eight commands cover the full
+              agent lifecycle: cryptographic sealing, runtime enforcement, EU AI
+              Act documentation, and adversarial fuzzing. This post covers what
+              each command actually does, how to configure it, and where it fits
               alongside your existing stack.
             </Lead>
           </article>
@@ -425,6 +430,29 @@ export default function BlogPage() {
                 </motion.div>
               );
             })}
+          </div>
+
+          {/* Problem → Solution quick-reference */}
+          <div className="mt-6 rounded-xl border border-white/5 bg-[#0A0A0A] overflow-hidden">
+            <div className="grid grid-cols-2 border-b border-white/5">
+              <div className="px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-white/40">Problem</div>
+              <div className="px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-white/40 border-l border-white/5">AgentNotary solution</div>
+            </div>
+            {[
+              ['"Did our prompt change behavior?"', "agentnotary seal --verify — fails if anything drifted"],
+              ['"Why did the agent burn $4,000 overnight?"', "agentnotary guard — would have blocked it at $1.00"],
+              ['"We need EU AI Act docs by August"', "agentnotary compliance --standard eu-ai-act"],
+              ['"Provider silently updated the model"', "Probe-response hash in agent.lock catches it"],
+              ['"Procurement wants an AI-BOM"', "agentnotary bom --format cyclonedx (also SPDX)"],
+              ['"Should we use Sonnet or 4o?"', "agentnotary bench — Pareto chart in 90 seconds"],
+              ['"Is our agent vulnerable to prompt injection?"', "agentnotary attack --suite owasp-llm-top10"],
+              ['"Why did the agent take that path at step 7?"', "agentnotary replay <id> --rewind --step 7"],
+            ].map(([problem, solution], i, arr) => (
+              <div key={i} className={`grid grid-cols-2 ${i < arr.length - 1 ? "border-b border-white/5" : ""}`}>
+                <div className="px-5 py-3 text-white/55 text-xs leading-relaxed italic">{problem}</div>
+                <div className="px-5 py-3 font-mono text-[11px] text-emerald-300/80 border-l border-white/5 leading-relaxed">{solution}</div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -513,11 +541,12 @@ export default function BlogPage() {
             model ID.
           </P>
           <TerminalBlock
-            caption="seal — write, verify, probe"
+            caption="seal — write, verify, probe, diff"
             lines={[
               { p: "$", t: "agentnotary seal             # write agent.lock", tone: "cmd" },
               { p: "$", t: "agentnotary seal --verify    # fail CI if drift detected", tone: "cmd" },
               { p: "$", t: "agentnotary seal --probe     # also hash a probe response", tone: "cmd" },
+              { p: "$", t: "agentnotary seal diff other.lock  # compare two lockfiles", tone: "cmd" },
               { p: "", t: "✓ agent.lock sealed · manifest · prompts · tools · deps", tone: "ok" },
             ]}
           />
@@ -718,7 +747,7 @@ export default function BlogPage() {
             side.
           </P>
           <Pull>
-            "They watch agents. AgentNotary certifies them."
+            "They watch agents. We certify agents."
           </Pull>
 
           <H3>Migrating from agentbox</H3>
@@ -737,6 +766,18 @@ export default function BlogPage() {
               { p: "", t: "✓ no manifest changes required", tone: "ok" },
             ]}
           />
+          <P>
+            The legacy <Mono>agentbox</Mono> package is archived at{" "}
+            <a
+              href="https://github.com/CharanBharathula/agentbox"
+              target="_blank"
+              rel="noreferrer"
+              className="text-emerald-400/80 hover:text-emerald-300 underline underline-offset-2"
+            >
+              github.com/CharanBharathula/agentbox
+            </a>
+            .
+          </P>
 
           <H3>Roadmap</H3>
           <ul className="list-none pl-0 space-y-3 my-6">
@@ -929,9 +970,10 @@ export default function BlogPage() {
                   Author · AgentNotary
                 </div>
                 <p className="mt-3 text-white/55 text-sm leading-relaxed max-w-sm">
-                  AgentNotary is Apache 2.0. Contributions welcome —
-                  especially Sigstore integration, streaming proxy, and wider
-                  attack corpus.
+                  AgentNotary is Apache 2.0. Contributions welcome — especially
+                  Sigstore Rekor integration, streaming proxy support in guard,
+                  wider attack corpus (Garak, AdvBench), NIST AI RMF / ISO 42001
+                  compliance templates, and international PII patterns.
                 </p>
                 <a
                   href="https://github.com/CharanBharathula/agentnotary"

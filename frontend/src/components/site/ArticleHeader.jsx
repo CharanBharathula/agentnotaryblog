@@ -80,9 +80,10 @@ export default function ArticleHeader() {
           data-testid="hero-subtitle"
           className="text-base sm:text-lg text-white/55 leading-relaxed max-w-xl mb-6"
         >
-          Notarize, govern, and audit autonomous agents. Cryptographic seals,
-          runtime guardrails, EU&nbsp;AI&nbsp;Act documentation, and adversarial
-          fuzzing — all in a single open-source CLI.
+          The notary public for AI agents — it certifies, seals, witnesses,
+          archives, and produces evidence. Cryptographic seals, runtime
+          guardrails, EU&nbsp;AI&nbsp;Act documentation, and adversarial fuzzing
+          in a single open-source CLI.
         </motion.p>
 
         {/* Author meta */}
