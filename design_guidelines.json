@@ -1,0 +1,129 @@
+{
+  "project_name": "AgentNotary",
+  "theme": "dark",
+  "archetype": "4 (Swiss & High-Contrast / Cyber-Professional)",
+  "typography": {
+    "fonts_to_install": [
+      "@fontsource/geist-sans",
+      "@fontsource/geist-mono"
+    ],
+    "headings": {
+      "fontFamily": "Geist Sans, sans-serif",
+      "weight": "font-semibold",
+      "letterSpacing": "tracking-tighter",
+      "color": "text-white/95",
+      "note": "Per user request, use Geist. Ensure it feels premium by keeping tracking very tight. Use white-to-gray text gradients for the H1."
+    },
+    "body": {
+      "fontFamily": "Geist Sans, sans-serif",
+      "size": "text-base sm:text-lg",
+      "color": "text-white/70",
+      "lineHeight": "leading-relaxed"
+    },
+    "mono": {
+      "fontFamily": "Geist Mono, monospace",
+      "usage": "Command palette, code blocks, overlines, statistics, metrics, labels, table headers"
+    }
+  },
+  "colors": {
+    "background": {
+      "default": "#050505",
+      "surface": "#0C0C0C",
+      "surfaceHighlight": "#1A1A1A"
+    },
+    "border": {
+      "default": "rgba(255, 255, 255, 0.08)",
+      "hover": "rgba(255, 255, 255, 0.15)",
+      "active": "rgba(255, 255, 255, 0.25)"
+    },
+    "text": {
+      "primary": "#EDEDED",
+      "secondary": "#8A8F98",
+      "muted": "#666666"
+    },
+    "accents": {
+      "primary": "#10B981",
+      "warning": "#F5A623",
+      "danger": "#FF453A"
+    },
+    "guidelines": "CRITICAL: No purple/violet gradients. Maintain a stark B&W structural theme similar to Vercel/Linear. Only use Emerald/Warning/Danger for specific trust/risk states."
+  },
+  "layout": {
+    "spacing": "Generous spacing. Sections should be padded with py-24 to py-32. Internal container paddings p-8 to p-12.",
+    "grid": "The Technical Look. Expose the skeleton using border-collapse. Use Mode B (Control Room Grid) for the Solution section.",
+    "borders": "Minimal corner radius. Use rounded-md (6px) or rounded-sm (4px) to feel like serious infrastructure."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-white text-black hover:bg-white/90 rounded-md px-6 py-2.5 font-medium tracking-tight transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)]",
+      "secondary": "bg-transparent border border-white/15 text-white hover:bg-white/5 rounded-md px-6 py-2.5 transition-colors font-medium",
+      "github_star": "Flex inline layout with GitHub icon, 'Star on GitHub', and a monospace counter."
+    },
+    "cards": {
+      "base": "bg-[#0A0A0A] border border-white/10 rounded-lg hover:border-white/20 transition-all duration-300",
+      "glow_effect": "For feature cards, add a subtle radial gradient mask or a 1px 'Tracing Beam' on hover."
+    },
+    "audio_player": {
+      "requirements": "Custom UI required. DO NOT use native HTML5 <audio> controls. Build a player with Play/Pause button, a fake visual waveform (using vertical bars), a scrubber, and timestamp texts using Geist Mono.",
+      "container": "bg-[#0C0C0C] border border-white/15 rounded-full px-6 py-3 flex items-center gap-4 text-sm font-mono text-white/80 max-w-lg mx-auto"
+    },
+    "command_palette": {
+      "style": "bg-[#050505] border border-white/10 rounded-md font-mono text-sm p-4 overflow-x-auto text-white/80 shadow-inner. Top bar should mimic terminal controls (red, yellow, green dots)."
+    },
+    "comparison_table": {
+      "style": "w-full border-collapse text-left. Headers: font-mono text-xs uppercase tracking-wider text-white/50 border-b border-white/10 p-4. Cells: p-4 border-b border-white/5. Highlight AgentNotary column with slightly lighter background (bg-white/5)."
+    }
+  },
+  "media": {
+    "images": [
+      {
+        "category": "hero_illustration",
+        "url": "https://static.prod-images.emergentagent.com/jobs/fe77d975-428a-4407-bb5f-a1d7dcb1fcc8/images/8b300657744e615bc7d12bc7d07090c0d1273aca745f7432ea7c66a21fe7027d.png",
+        "description": "3D-feeling illustration for the right side of the hero section or centered beneath the typography.",
+        "alt": "AgentNotary Trust Infrastructure Illustration"
+      },
+      {
+        "category": "walkthrough_repo",
+        "url": "https://customer-assets.emergentagent.com/wingman/fe77d975-428a-4407-bb5f-a1d7dcb1fcc8/attachments/9c3e8e2d1a4e4f8d9b0c4e1c88b0c4ee7_repo_screenshot.png",
+        "description": "Screenshot of the repository for the Embla Walkthrough Carousel.",
+        "alt": "AgentNotary GitHub Repository"
+      },
+      {
+        "category": "walkthrough_terminal",
+        "url": "https://customer-assets.emergentagent.com/wingman/fe77d975-428a-4407-bb5f-a1d7dcb1fcc8/attachments/ea1e2e2b50b04fbe819652e13d0e9138_terminal_screenshots.png",
+        "description": "Screenshot of terminal usage for the Embla Walkthrough Carousel.",
+        "alt": "AgentNotary Terminal CLI"
+      },
+      {
+        "category": "background_texture",
+        "url": "https://images.unsplash.com/photo-1771873679764-4e5503b69040?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA4Mzl8MHwxfHNlYXJjaHwxfHxkYXJrJTIwZ3JpZCUyMHRleHR1cmUlMjBhYnN0cmFjdHxlbnwwfHx8fDE3Nzc4Nzk1MDZ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract dark grid texture. Apply as absolute background in 'The Problem' section with opacity-10 mix-blend-overlay to create a gritty 'Wild West' atmosphere.",
+        "alt": "Dark Grid Texture"
+      },
+      {
+        "category": "blog_author_headshot",
+        "url": "https://images.unsplash.com/photo-1600896997793-b8ed3459a17f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTJ8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBkZXZlbG9wZXIlMjBoZWFkc2hvdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc3Nzg3OTUwNnww&ixlib=rb-4.1.0&q=85",
+        "description": "Author headshot for the blog post section 'Why Agentic Trust is the Next Big Frontier in AI'.",
+        "alt": "Author Portrait"
+      }
+    ]
+  },
+  "interactions": {
+    "scrolling": "Integrate @studio-freight/lenis (or lenis) for smooth scroll momentum.",
+    "animations": "Use framer-motion for smooth entrance. Elements should fade in (opacity 0 -> 1) and shift slightly (y: 20 -> 0) with a slow, ease-out transition. Stagger feature blocks.",
+    "microinteractions": "Hover states on code blocks to reveal a 'Copy' icon. Button active states must scale down slightly (scale: 0.98)."
+  },
+  "specific_instructions_for_main_agent": [
+    "Ensure all interactive elements have data-testid attributes (e.g., data-testid='github-star-button', data-testid='copy-pip-command').",
+    "Hero title must be exactly: 'AgentNotary: The Trust Infrastructure for AI Agents'.",
+    "Section 1: Hero (typography, 2 CTAs, image).",
+    "Section 2: The Problem ('Wild West' of autonomous agents, security risks). Use subtle Amber/Red accents and the background texture here.",
+    "Section 3: Solutions. Bento grid containing 4 features: Cryptographic Notarization, EU AI Act Compliance, Adversarial Fuzzing, Runtime Guardrails.",
+    "Section 4: Walkthrough Carousel using embla-carousel-react showing repo and terminal screenshots. Add Voice-over Audio Player below it.",
+    "Section 5: Comparison Matrix Table against LangSmith, Langfuse, Helicone, AgentOps.",
+    "Section 6: CLI Command display block (tabs for init, seal, guard, compliance, attack, bom, bench, replay).",
+    "Section 7: Deep-Dive Blog Post ('Why Agentic Trust is the Next Big Frontier in AI'). Present cleanly like a Substack/Linear release note.",
+    "Use Lucide React for icons.",
+    "Do NOT use any purple or violet colors. Strictly Vercel/Anthropic style."
+  ]
+}
