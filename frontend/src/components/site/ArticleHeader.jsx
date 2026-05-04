@@ -80,9 +80,14 @@ export default function ArticleHeader() {
           data-testid="hero-subtitle"
           className="text-base sm:text-lg text-white/55 leading-relaxed max-w-xl mb-6"
         >
-          Notarize, govern, and audit autonomous agents. Cryptographic seals,
-          runtime guardrails, EU&nbsp;AI&nbsp;Act documentation, and adversarial
-          fuzzing — all in a single open-source CLI.
+          The notary stamp your agent needs before it ships. One CLI seals,
+          tests, guards, and certifies — works with any framework, any model.
+          Cryptographic{" "}
+          <code className="font-mono text-emerald-300 bg-emerald-400/5 border border-emerald-400/15 rounded px-1 py-0.5 text-[0.92em]">
+            agent.lock
+          </code>
+          , runtime cost caps, EU&nbsp;AI&nbsp;Act scaffolds, and adversarial
+          fuzzing — open source, Apache&nbsp;2.0.
         </motion.p>
 
         {/* Author meta */}
@@ -163,8 +168,8 @@ export default function ArticleHeader() {
           className="pt-6 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-5 font-mono text-xs"
         >
           {[
-            ["97%", "of companies have deployed AI agents"],
-            ["82%", "can't track which agents they're running"],
+            ["$47K", "burned in 11 days by one looping agent"],
+            ["82%", "of teams can't track which agents they're running"],
             ["Aug 2, 2026", "EU AI Act enforcement begins"],
             ["169 tests · Ruff clean · CI green", "CI status"],
           ].map(([stat, label]) => (

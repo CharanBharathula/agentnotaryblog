@@ -393,6 +393,42 @@ export default function BlogPage() {
             </p>
           </div>
 
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5 }}
+            data-testid="problem-story-callout"
+            className="mb-8 rounded-xl border border-rose-400/20 bg-gradient-to-br from-rose-500/[0.05] to-transparent p-6 sm:p-8"
+          >
+            <div className="flex items-start gap-4">
+              <div className="h-10 w-10 shrink-0 rounded-md border border-rose-400/30 bg-rose-400/10 flex items-center justify-center">
+                <DollarSign className="h-4 w-4 text-rose-300" />
+              </div>
+              <div className="flex-1">
+                <div className="font-mono text-[10px] tracking-[0.22em] uppercase text-rose-300/80 mb-2">
+                  A real incident · 11 days · $47,000
+                </div>
+                <h4 className="text-white text-lg sm:text-xl font-medium tracking-tight leading-snug mb-3">
+                  Two agents got stuck in a loop. Nobody noticed for 11 days.
+                </h4>
+                <p className="text-white/65 text-sm sm:text-base leading-relaxed">
+                  By the time the team looked at the bill, the agents had spent
+                  about $47,000 on API calls and produced nothing. The team was
+                  watching user metrics, not API spend. That's the gap{" "}
+                  <Mono>guard run</Mono> closes — a hard cap at the API
+                  boundary, returned as a provider-shaped 403 the moment a
+                  session crosses your budget. No code changes, no SDK swap.
+                  One flag.
+                </p>
+                <div className="mt-4 font-mono text-[12.5px] text-emerald-300/90 bg-emerald-400/[0.04] border border-emerald-400/15 rounded px-3 py-2 inline-block">
+                  <span className="text-emerald-400/70">$ </span>
+                  agentnotary guard run -- python -m my_agent
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
           <div className="grid md:grid-cols-2 gap-px bg-white/5 border border-white/5 rounded-xl overflow-hidden">
             {PROBLEMS.map((p, i) => {
               const Icon = p.icon;
@@ -738,11 +774,68 @@ export default function BlogPage() {
             ]}
           />
 
-          <H3>Roadmap</H3>
+          <H3>What's coming next</H3>
+          <P>
+            v0.3.1 lands three commands that close real gaps in every other
+            governance tool — and a GitHub Action so adopting AgentNotary is
+            one line in <Mono>.github/workflows/</Mono>.
+          </P>
+          <div className="grid sm:grid-cols-2 gap-3 my-6">
+            {[
+              {
+                cmd: "agentnotary doctor",
+                tag: "v0.3.1",
+                body: "One-shot health scan. Runs every check, prints a punch-list, prints a 0–100 AgentNotary Score. Like brew doctor, but for your agent.",
+              },
+              {
+                cmd: "agentnotary drift",
+                tag: "v0.3.1",
+                body: "Re-runs probes from agent.lock against the live model. Catches the case where your provider silently updates weights behind the same model ID.",
+              },
+              {
+                cmd: "agentnotary compare",
+                tag: "v0.3.1",
+                body: "Diff two agent.lock files. Shows exactly what changed — model, prompts, tools, deps — between staging and prod, or yesterday and today.",
+              },
+              {
+                cmd: "agentnotary-action",
+                tag: "v0.3.1",
+                body: "GitHub Action: validate → seal --verify → attack --dry-run → compliance --check → doctor. Posts a per-check table comment on every PR. Single line in your workflow.",
+              },
+              {
+                cmd: "Score badge",
+                tag: "v0.3.1",
+                body: "Embed your AgentNotary Score as a Shields.io badge in your README. Set automatically from doctor's JSON output. One badge, social proof loop.",
+              },
+              {
+                cmd: "Streaming proxy + NIST/ISO templates",
+                tag: "v0.3.x",
+                body: "guard supports streaming SSE responses without buffering. compliance gains NIST AI RMF and ISO 42001 scaffolds.",
+              },
+            ].map((item) => (
+              <div
+                key={item.cmd}
+                className="rounded-md border border-emerald-400/15 bg-emerald-400/[0.02] p-4 hover:bg-emerald-400/[0.04] hover:border-emerald-400/25 transition-colors"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <code className="font-mono text-[12.5px] text-emerald-300">
+                    {item.cmd}
+                  </code>
+                  <span className="font-mono text-[10px] text-white/40 border border-white/10 rounded px-1.5 py-0.5 tracking-wider">
+                    {item.tag}
+                  </span>
+                </div>
+                <p className="text-white/65 text-[13px] leading-relaxed">
+                  {item.body}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <H3>Long-term roadmap</H3>
           <ul className="list-none pl-0 space-y-3 my-6">
             {[
               ["v0.3.0 (current)", "bom, bench, attack, replay --rewind"],
-              ["v0.3.x", "Streaming proxy support in guard. NIST AI RMF and ISO 42001 compliance templates."],
               ["v0.4", "Sigstore-style cryptographic signing + transparency log for agent.lock. Behavioral fingerprinting (N-prompt probe panel instead of single-prompt)."],
               ["v0.5", "AgentNotary Hub — public registry of sealed agents. notarize push / notarize pull."],
             ].map(([k, v]) => (
