@@ -121,7 +121,27 @@ export default function Commands() {
   const mainCmd = cmd.lines.find((l) => l.c === "cmd")?.t ?? "";
 
   const copyCmd = async () => {
-    await navigator.clipboard.writeText(mainCmd);
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(mainCmd);
+      } else {
+        throw new Error("clipboard unavailable");
+      }
+    } catch {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = mainCmd;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "absolute";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      } catch {
+        /* swallow */
+      }
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   };

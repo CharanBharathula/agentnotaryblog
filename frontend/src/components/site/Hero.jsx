@@ -7,7 +7,29 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export default function Hero() {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
-    await navigator.clipboard.writeText("pip install agentnotary");
+    const text = "pip install agentnotary";
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        throw new Error("clipboard unavailable");
+      }
+    } catch {
+      // Fallback for restricted contexts
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "absolute";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      } catch {
+        /* swallow */
+      }
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   };
