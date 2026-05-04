@@ -16,8 +16,7 @@ import {
 import Commands from "./Commands";
 import Walkthrough from "./Walkthrough";
 import Comparison from "./Comparison";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+import { mediaUrl } from "@/lib/mediaUrl";
 
 // ── Article typography helpers ─────────────────────────────────────────
 
@@ -269,7 +268,7 @@ export default function BlogPage() {
             className="mb-14 rounded-xl overflow-hidden border border-white/10 bg-[#0A0A0A]"
           >
             <img
-              src={`${BACKEND_URL}/api/media/repo.png`}
+              src={mediaUrl("repo.png")}
               alt="AgentNotary repository"
               data-testid="blog-hero-image"
               className="w-full aspect-[16/9] object-cover object-top"
@@ -495,7 +494,7 @@ export default function BlogPage() {
                 <div className="w-10" />
               </div>
               <img
-                src={`${BACKEND_URL}/api/media/terminal.png`}
+                src={mediaUrl("terminal.png")}
                 alt="Terminal output from agentnotary commands"
                 data-testid="blog-terminal-image"
                 className="w-full object-contain bg-black"
@@ -782,10 +781,10 @@ export default function BlogPage() {
               </div>
               <video
                 data-testid="blog-walkthrough-video"
-                src={`${BACKEND_URL}/api/media/walkthrough.mp4`}
+                src={mediaUrl("walkthrough.mp4")}
                 controls
                 preload="metadata"
-                poster={`${BACKEND_URL}/api/media/hero.png`}
+                poster={mediaUrl("hero.png")}
                 className="w-full aspect-video bg-black"
               />
             </div>

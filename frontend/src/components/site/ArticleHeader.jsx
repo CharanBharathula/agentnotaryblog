@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Check, Copy, Github } from "lucide-react";
 import { useState } from "react";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+import { mediaUrl } from "@/lib/mediaUrl";
 
 export default function ArticleHeader() {
   const [copied, setCopied] = useState(false);
@@ -196,7 +195,7 @@ export default function ArticleHeader() {
             </span>
           </div>
           <img
-            src={`${BACKEND_URL}/api/media/hero.png`}
+            src={mediaUrl("hero.png")}
             alt="AgentNotary Trust Infrastructure Illustration"
             data-testid="hero-image"
             className="w-full aspect-[16/7] object-cover object-center"

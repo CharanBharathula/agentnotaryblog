@@ -2,26 +2,25 @@ import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, Film } from "lucide-react";
 import AudioPlayer from "./AudioPlayer";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+import { mediaUrl } from "@/lib/mediaUrl";
 
 const SLIDES = [
   {
-    img: `${BACKEND_URL}/api/media/repo.png`,
+    img: mediaUrl("repo.png"),
     title: "The repository",
     tag: "01 / github.com/CharanBharathula/agentnotary",
     caption:
       "7 commits. Apache 2.0. 169 tests. The canonical open-source trust primitive for AI agents.",
   },
   {
-    img: `${BACKEND_URL}/api/media/terminal.png`,
+    img: mediaUrl("terminal.png"),
     title: "Natural CLI",
     tag: "02 / agentnotary ▸ seal · guard · attack",
     caption:
       "Every command produces deterministic, cryptographically-verifiable artifacts you can diff in CI.",
   },
   {
-    img: `${BACKEND_URL}/api/media/hero.png`,
+    img: mediaUrl("hero.png"),
     title: "The trust layer",
     tag: "03 / agent.lock — the missing primitive",
     caption:
@@ -76,10 +75,10 @@ export default function Walkthrough() {
             </div>
             <video
               data-testid="walkthrough-video"
-              src={`${BACKEND_URL}/api/media/walkthrough.mp4`}
+              src={mediaUrl("walkthrough.mp4")}
               controls
               preload="metadata"
-              poster={`${BACKEND_URL}/api/media/hero.png`}
+              poster={mediaUrl("hero.png")}
               className="w-full aspect-video bg-black"
             />
           </div>
