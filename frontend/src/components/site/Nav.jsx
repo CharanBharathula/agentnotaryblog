@@ -12,8 +12,16 @@ const LINKS = [
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      const el = document.documentElement;
+      const max = el.scrollHeight - el.clientHeight;
+      setProgress(max > 0 ? (y / max) * 100 : 0);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -28,7 +36,12 @@ export default function Nav() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+      <div
+        className="absolute bottom-0 left-0 h-[2px] bg-emerald-400 transition-[width] duration-75 ease-linear pointer-events-none"
+        style={{ width: `${progress}%` }}
+        aria-hidden="true"
+      />
+      <div className="mx-auto max-w-6xl px-6 h-14 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2.5 group" data-testid="nav-logo">
           <div className="relative h-7 w-7 rounded-md border border-white/15 bg-white/5 flex items-center justify-center">
             <div className="h-2 w-2 rounded-sm bg-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.8)]" />

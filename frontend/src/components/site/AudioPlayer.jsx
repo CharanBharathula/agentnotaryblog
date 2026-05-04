@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause, Volume2 } from "lucide-react";
+import { mediaUrl } from "@/lib/mediaUrl";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const AUDIO_URL = `${BACKEND_URL}/api/media/voiceover.mp3`;
+const AUDIO_URL = mediaUrl("voiceover.mp3");
 
 const BARS = 46;
 

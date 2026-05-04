@@ -1,13 +1,8 @@
 import { useEffect } from "react";
 import "@/App.css";
 import Nav from "@/components/site/Nav";
-import Hero from "@/components/site/Hero";
-import Problem from "@/components/site/Problem";
-import Features from "@/components/site/Features";
-import Commands from "@/components/site/Commands";
-import Walkthrough from "@/components/site/Walkthrough";
-import Comparison from "@/components/site/Comparison";
-import BlogPost from "@/components/site/BlogPost";
+import ArticleHeader from "@/components/site/ArticleHeader";
+import BlogPage from "@/components/site/BlogPage";
 import Footer from "@/components/site/Footer";
 
 function App() {
@@ -37,13 +32,8 @@ function App() {
     <div className="App relative">
       <Nav />
       <main>
-        <Hero />
-        <Problem />
-        <Features />
-        <Commands />
-        <Walkthrough />
-        <Comparison />
-        <BlogPost />
+        <ArticleHeader />
+        <BlogPage />
       </main>
       <Footer />
     </div>
